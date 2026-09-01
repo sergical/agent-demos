@@ -1,4 +1,5 @@
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
+import * as Sentry from "@sentry/nextjs";
 import {
   convertToModelMessages,
   createUIMessageStreamResponse,
@@ -33,6 +34,9 @@ export async function POST(req: Request) {
   const { id, messages }: { id?: string; messages: AssistantUIMessage[] } =
     await req.json();
 
+  Sentry.setConversationId(id ?? null);
+  Sentry.setUser(DEMO_USER);
+
   const result = streamText({
     // The single-argument call resolves to the provider's completion overload;
     // .chat is the one that matches this route's message-based prompt.
@@ -41,8 +45,9 @@ export async function POST(req: Request) {
     messages: await convertToModelMessages(messages),
     tools: createTools(DEMO_USER.id, id),
     stopWhen: isStepCount(5),
-    // functionId names the agent for telemetry.
-    telemetry: {
+    // Enable AI SDK telemetry and name the agent for Sentry.
+    experimental_telemetry: {
+      isEnabled: true,
       functionId: "shopping-assistant",
     },
   });
