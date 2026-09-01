@@ -1,0 +1,27 @@
+{
+	"name": "github-harness-flue",
+	"private": true,
+	"type": "module",
+	"engines": {
+		"node": ">=22.19.0"
+	},
+	"scripts": {
+		"demo": "flue run src/agents/review.ts --message 'Review the diff at fixtures/sample.diff and post your review.'",
+		"demo:fix": "flue run src/agents/review.ts --message 'Review the diff at fixtures/fix.diff and post your review.'",
+		"demo:tool-error": "flue run src/agents/review.ts --message 'Review the diff at fixtures/latest.diff and post your review. If that path fails, fall back to fixtures/sample.diff.'",
+		"lint": "oxlint",
+		"typecheck": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@flue/opentelemetry": "2.0.3",
+		"@flue/runtime": "2.0.3",
+		"@opentelemetry/api": "1.9.1",
+		"valibot": "1.4.2"
+	},
+	"devDependencies": {
+		"@flue/cli": "2.0.3",
+		"@types/node": "22.20.1",
+		"oxlint": "1.78.0",
+		"typescript": "7.0.2"
+	}
+}
